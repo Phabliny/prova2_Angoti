@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Button, Image, StatusBar, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 export default function App() {
   const [data, setData] = useState(new Date());
@@ -39,16 +39,20 @@ export default function App() {
         console.error('error', error);
       })
   }
-  // const formataDia = () =>{
-  //   let dia = ''
-  //   (data.getDate()<10? dia=('0'+data.getDate()).toLocaleString() : dia=data.getDate())
-  // }
+  const formataDia = () =>{
+    let dia = data.getDate().toLocaleString()
+    if(data.getDate()<10) {
+      return "0"+dia
+    }else{
+      return dia
+    } 
+  }
 
   return (
     <View style={styles.container}>
       {!dados ? (
         <>
-          <Text style={styles.textoData}>{data.getDate()}/{data.getMonth()+1}/{data.getFullYear()}</Text>
+          <Text style={styles.textoData}>{formataDia()}/{data.getMonth()+1}/{data.getFullYear()}</Text>
           <View style={styles.botao}>
             <Button title="Escolher data" onPress={showDatepicker} />
           </View>
@@ -59,7 +63,7 @@ export default function App() {
         </>
       ) : (
         <TouchableOpacity style={{ flex: 1, width: "100%", height: "100%" }} onPress={() => setDados(null)} >
-          <Image source={{ uri: dados }} style={{ width: "100%", height: "100%" }} resizeMode="contain" />
+          <Image source={{ uri: dados }} style={{ width: "100%", height: "100%" }} resizeMode="contain"/>
         </TouchableOpacity>
       )
       }
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textoData: {
-    fontSize: 24,
+    fontSize: 30,
   },
   botao: {
     margin: 11,
